@@ -7,10 +7,11 @@ class Beer(models.Model):
     name = models.CharField(max_length=50)
     size = models.CharField(max_length=10)
     srp = models.FloatField()
-    
-class Brand(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
-    beers = models.ManyToManyField(Beer)
     def __str__(self):
         return self.name
+
+class Brand(models.Model):
+  
+    name = models.CharField(max_length=50)
+    beers = models.ForeignKey(Beer, on_delete=models.CASCADE, null=True)
+ 
