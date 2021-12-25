@@ -11,3 +11,7 @@ from .serializer import BeerSerializer, BrandSerializer
 class BeerView(viewsets.ModelViewSet):
     queryset = Beer.objects.all()
     serializer_class = BeerSerializer
+
+class BrandView(viewsets.ModelViewSet):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
