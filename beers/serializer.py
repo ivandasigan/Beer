@@ -5,14 +5,14 @@ from .models import Beer, Brand
 class BeerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Beer
-        fields = ['id', 'name','size','srp']
+        fields = ['name','size','srp']
     
 class BrandSerializer(serializers.ModelSerializer):
-    beers = BeerSerializer(many=True, read_only=True)
+    beers = BeerSerializer(many=True, read_only=False)
 
     class Meta:
         model = Brand
-        fields = ['name', 'beers']
+        fields = ['id','name', 'beers']
 
     def create(self, validated_data):
         beers_data = validated_data.pop('beers')

@@ -15,6 +15,7 @@ class Beer(models.Model):
     size = models.CharField(max_length=10)
     srp = models.FloatField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, related_name='beers')
- 
+    def __str__(self):
+        return self.name
 
 
