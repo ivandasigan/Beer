@@ -2,6 +2,19 @@
 from rest_framework import fields, serializers
 from .models import Beer, Brand
 
+from django.contrib.auth.models import User
+
+class UserSeriailizer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+    def create(self, validated_data):
+        user = User.objects.create(username = validated_data['username'])
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
 class BeerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Beer
