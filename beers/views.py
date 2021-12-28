@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.http import response
 from django.shortcuts import render
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -13,6 +13,7 @@ from .serializer import BeerSerializer, BrandSerializer, UserSeriailizer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from rest_framework.authtoken import views
 # Create your views here.
 
 
@@ -27,6 +28,17 @@ class RegisterUser(APIView):
         return Response({'status' : 403, 'errors': serializer.errors, 'message':'something went wrong'})
 
 
+class LoginUser(APIView):
+
+    def post(self, request):
+        username = request.data['username']
+        password = request.data['password']
+        user = User.objects.get(username=username, password=password)
+        user_token = user.auth_token.key
+        return Response({"status":200,"token": user_token, "message":"Successfully login"})
+
+
+
 
 class BeerAPIView(APIView):
 
@@ -34,9 +46,17 @@ class BeerAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        beers = Beer.objects.all()
-        serializer = BeerSerializer(beers, many=True)
-        print(request.query_params["name"])
+        try:
+            #Get beer object using url param
+            name = request.query_params["name"]
+            if name != None:
+                beer = Beer.objects.get(name=name)
+                serializer = BeerSerializer(beer)
+        except:
+            #return all beer objects
+            beers = Beer.objects.all()
+            serializer = BeerSerializer(beers, many=True)
+  
         return Response(serializer.data)
 
     def post(self,request):
@@ -45,7 +65,37 @@ class BeerAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+class BeerPUTAPIView(APIView):
+    def get(self, request):
+        name = request.query_params["name"]
+        beer = Beer.objects.get(name=name)
+        serializer = BeerSerializer(beer)
+        return Response({"status": 201, "payload": serializer.data, "message":"Successfully fetched"})
+    def put(self, request):
+        name = request.query_params["name"]
+        beer = Beer.objects.get(name=name)
+        serializer = BeerSerializer(beer, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": 201, "payload": serializer.data, "message":"Successfully Updated"})
+        return Response({"status": 401, "payload": serializer.errors, "message":"Something went wroing"})
 
+    # def get_object(self, name):
+    #     try:
+    #         return Beer.objects.get(name=name)
+    #     except:
+    #         return Response(status=status.HTTP_400_BAD_REQUEST)
+    # def get(self, request, name):
+    #     beer = self.get_object(name)
+    #     serialiazer = BeerSerializer(beer)
+    #     return Response(data=serialiazer.data)
+    # def put(self, request, name):
+    #     beer = self.get_object(name)
+    #     serializer = BeerSerializer(beer, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class BrandAPIView(APIView):
 
@@ -53,8 +103,14 @@ class BrandAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        brands = Brand.objects.all()
-        serializer = BrandSerializer(brands, many=True)
+        try:
+            id = request.query_params["id"]
+            if id != None:
+                brand = Brand.objects.get(id=id)
+                serializer = BrandSerializer(brand)
+        except:
+            brands = Brand.objects.all()
+            serializer = BrandSerializer(brands, many=True)
         return Response(serializer.data)
 
     def post(self,request):
