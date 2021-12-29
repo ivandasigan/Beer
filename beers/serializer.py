@@ -17,7 +17,7 @@ class UserSeriailizer(serializers.ModelSerializer):
 class BeerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Beer
-        fields = ['name','size','srp', 'stock','ratings']
+        fields = ['id','name','size','srp', 'stock','ratings']
     
 class BrandSerializer(serializers.ModelSerializer):
     beers = BeerSerializer(many=True, read_only=False)

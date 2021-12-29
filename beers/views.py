@@ -48,9 +48,9 @@ class BeerAPIView(APIView):
     def get(self, request):
         try:
             #Get beer object using url param
-            name = request.query_params["name"]
-            if name != None:
-                beer = Beer.objects.get(name=name)
+            id = request.query_params["id"]
+            if id != None:
+                beer = Beer.objects.get(id=id)
                 serializer = BeerSerializer(beer)
         except:
             #return all beer objects
