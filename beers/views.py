@@ -25,7 +25,7 @@ class RegisterUser(APIView):
             user = User.objects.get(username=serializer.data['username'])
             token_obj, _ = Token.objects.get_or_create(user=user)
             return Response({'status' : 200, 'payload' : serializer.data, 'token': str(token_obj), 'message': 'your data is saved'})
-        return Response({'status' : 403, 'errors': serializer.errors, 'message':'something went wrong'})
+        return Response({'status' : 401, 'errors': serializer.errors, 'message':'something went wrong'})
 
 
 class LoginUser(APIView):
@@ -33,10 +33,12 @@ class LoginUser(APIView):
     def post(self, request):
         username = request.data['username']
         password = request.data['password']
-        user = User.objects.get(username=username, password=password)
-        user_token = user.auth_token.key
-        return Response({"status":200,"token": user_token, "message":"Successfully login"})
-
+        try:
+            user = User.objects.get(username=username, password=password)
+            user_token = user.auth_token.key
+            return Response({"status":200,"token": user_token, "message":"Successfully login"})
+        except:
+            return Response({"status":401,"token": None, "message":"Something went wrong"})
 
 
 
@@ -63,8 +65,8 @@ class BeerAPIView(APIView):
         serializer = BeerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status' : 200, 'payload' : serializer.data, 'message': 'Successfully Save'})
+        return Response({'status' : 401, 'payload' : serializer.errors, 'message': 'Something went wrong'})
 
 class BeerPUTAPIView(APIView):
 
