@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.http import response
 from django.shortcuts import render
-from rest_framework import viewsets, status, filters
+from rest_framework import viewsets, status, filters, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -24,7 +24,7 @@ class RegisterUser(APIView):
             serializer.save()
             user = User.objects.get(username=serializer.data['username'])
             token_obj, _ = Token.objects.get_or_create(user=user)
-            return Response({'status' : 200, 'payload' : serializer.data, 'token': str(token_obj), 'message': 'your data is saved'})
+            return Response({'status' : 200, 'payload' : serializer.data, 'token': str(token_obj), 'message': 'Successfully Registered'})
         return Response({'status' : 401, 'errors': serializer.errors, 'message':'something went wrong'})
 
 
@@ -105,8 +105,11 @@ class BrandAPIView(APIView):
 
 
 
-
-
+class FilterBeerListView(generics.ListAPIView):
+    queryset = Beer.objects.all()
+    serializer_class = BeerSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
 
 class BeerView(viewsets.ModelViewSet):
