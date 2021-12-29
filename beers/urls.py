@@ -8,16 +8,22 @@ from .views import BeerView, BrandView, BeerAPIView, BrandAPIView, RegisterUser,
 
 from rest_framework.authtoken import views
 
-router = DefaultRouter()
-router.register('beers', BeerView, basename='beers')
-router.register('brand', BrandView, basename='brand')
+# router = DefaultRouter()
+# router.register('beers', BeerView, basename='beers')
+# router.register('brand', BrandView, basename='brand')
+#path('', include(router.urls)),
 
 urlpatterns = [
-    #path('', include(router.urls)),
+    #Beer api view
     path('beers/', BeerAPIView.as_view()),
-    path('brand/', BrandAPIView.as_view()),
-    path('api-token-auth/', views.obtain_auth_token),
-    path('register/', RegisterUser.as_view()),
     path('putbeer/', BeerPUTAPIView.as_view()),
-    path('login/', LoginUser.as_view())
+
+    #Brand api view
+    path('brand/', BrandAPIView.as_view()),
+ 
+    #User auth
+    path('register/', RegisterUser.as_view()),
+    path('login/', LoginUser.as_view()),
+
+    path('api-token-auth/', views.obtain_auth_token),
 ]

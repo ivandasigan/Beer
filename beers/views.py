@@ -58,20 +58,16 @@ class BeerAPIView(APIView):
             serializer = BeerSerializer(beers, many=True)
   
         return Response(serializer.data)
-
+    #Add new beer object
     def post(self,request):
         serializer = BeerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-        
+
 class BeerPUTAPIView(APIView):
-    def get(self, request):
-        name = request.query_params["name"]
-        beer = Beer.objects.get(name=name)
-        serializer = BeerSerializer(beer)
-        return Response({"status": 201, "payload": serializer.data, "message":"Successfully fetched"})
+
     def put(self, request):
         name = request.query_params["name"]
         beer = Beer.objects.get(name=name)
@@ -81,22 +77,6 @@ class BeerPUTAPIView(APIView):
             return Response({"status": 201, "payload": serializer.data, "message":"Successfully Updated"})
         return Response({"status": 401, "payload": serializer.errors, "message":"Something went wroing"})
 
-    # def get_object(self, name):
-    #     try:
-    #         return Beer.objects.get(name=name)
-    #     except:
-    #         return Response(status=status.HTTP_400_BAD_REQUEST)
-    # def get(self, request, name):
-    #     beer = self.get_object(name)
-    #     serialiazer = BeerSerializer(beer)
-    #     return Response(data=serialiazer.data)
-    # def put(self, request, name):
-    #     beer = self.get_object(name)
-    #     serializer = BeerSerializer(beer, data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class BrandAPIView(APIView):
 
