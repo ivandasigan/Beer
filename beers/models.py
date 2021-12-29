@@ -18,6 +18,6 @@ class Beer(models.Model):
     ratings = models.FloatField(default=0)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, related_name='beers')
     def __str__(self):
-        return self.name
+        return self.name 
 
 
