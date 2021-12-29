@@ -14,6 +14,8 @@ class Beer(models.Model):
     name = models.CharField(max_length=50)
     size = models.CharField(max_length=10)
     srp = models.FloatField()
+    stock = models.IntegerField(default=0)
+    ratings = models.FloatField(default=0)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, related_name='beers')
     def __str__(self):
         return self.name
