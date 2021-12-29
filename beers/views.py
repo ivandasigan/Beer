@@ -69,8 +69,8 @@ class BeerAPIView(APIView):
 class BeerPUTAPIView(APIView):
 
     def put(self, request):
-        name = request.query_params["name"]
-        beer = Beer.objects.get(name=name)
+        id = request.query_params["id"]
+        beer = Beer.objects.get(id=id)
         serializer = BeerSerializer(beer, data=request.data)
         if serializer.is_valid():
             serializer.save()
