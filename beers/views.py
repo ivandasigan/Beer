@@ -120,23 +120,11 @@ class FilterBeerListView(generics.ListAPIView):
     search_fields = ['name']
 
 
-
-#Render IMAGE
-from .custom_renderers import JPEGRenderer, PNGRenderer
+#Image
 from .serializer import ImageSerializer
-
-class ImageAPIView1(viewsets.ModelViewSet):
+class ImageView(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-
-
-class ImageAPIView(generics.RetrieveAPIView):
-    def get(self, request, *args, **kwargs):
-        renderer_classes = [JPEGRenderer]
-        queryset = Beer.objects.get(id=self.kwargs['id']).image
-        data = queryset
-        return Response(data, content_type='image/jpg')
-
 
 
 class BeerView(viewsets.ModelViewSet):

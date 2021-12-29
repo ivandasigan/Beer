@@ -4,14 +4,15 @@ from rest_framework import urlpatterns
 from rest_framework.routers import DefaultRouter
 
 from beers.models import Beer
-from .views import BeerView, BrandView, BeerAPIView, BrandAPIView, ImageAPIView1, RegisterUser, BeerPUTAPIView, LoginUser, FilterBeerListView, ImageAPIView, ImageSerializer
+from .views import BeerView, BrandView, BeerAPIView, BrandAPIView, RegisterUser, BeerPUTAPIView, LoginUser, FilterBeerListView, ImageView
 
 from rest_framework.authtoken import views
 
 router = DefaultRouter()
 router.register('beersss', BeerView, basename='beers')
 router.register('brandss', BrandView, basename='brand')
-router.register('images', ImageAPIView1, basename='images')
+router.register('images', ImageView, basename='images')
+
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -32,5 +33,4 @@ urlpatterns = [
 
     path('api-token-auth/', views.obtain_auth_token),
 
-    path('id/<id>', ImageAPIView.as_view())
 ]

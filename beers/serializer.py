@@ -17,7 +17,7 @@ class UserSeriailizer(serializers.ModelSerializer):
 class BeerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Beer
-        fields = ['id','name','size','image','srp', 'stock','ratings']
+        fields = ['id','name','size','srp', 'stock','ratings']
     
 class BrandSerializer(serializers.ModelSerializer):
     beers = BeerSerializer(many=True, read_only=False)
@@ -39,5 +39,3 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = ['id','image']
     
-    # def create(self, validated_data):
-    #     return Image.objects.create(**validated_data)

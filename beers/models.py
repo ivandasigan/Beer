@@ -1,14 +1,7 @@
 from django.db import models
 import os
 
-from django.db.models.fields import UUIDField
 # Create your models here.
-import uuid
-
-def filePath(instance, filename):
-    # ext = filename.split('.')[-1]
-    # filename = "%s.%s" % (uuid.uuid4(), ext)
-    return 'media/images/{0}/'.format(filename)
 
 class Brand(models.Model):
     id = models.AutoField(primary_key=True)
@@ -32,4 +25,4 @@ class Beer(models.Model):
 
 class Image(models.Model):
     id = models.AutoField(primary_key=True)
-    image = models.ImageField('images/',null=True)
+    image = models.ImageField(upload_to="images/%Y/%m/%D/",null=True, blank=True)
