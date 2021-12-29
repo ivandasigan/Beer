@@ -102,6 +102,11 @@ class BrandAPIView(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
+
+
+
 class BeerView(viewsets.ModelViewSet):
     queryset = Beer.objects.all()
     serializer_class = BeerSerializer
