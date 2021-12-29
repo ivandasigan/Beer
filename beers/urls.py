@@ -4,16 +4,18 @@ from rest_framework import urlpatterns
 from rest_framework.routers import DefaultRouter
 
 from beers.models import Beer
-from .views import  BeerAPIView, BrandAPIView, RegisterUser, BeerPUTAPIView, LoginUser, FilterBeerListView
+from .views import BeerView, BrandView, BeerAPIView, BrandAPIView, ImageAPIView1, RegisterUser, BeerPUTAPIView, LoginUser, FilterBeerListView, ImageAPIView, ImageSerializer
 
 from rest_framework.authtoken import views
 
-# router = DefaultRouter()
-# router.register('beers', BeerView, basename='beers')
-# router.register('brand', BrandView, basename='brand')
-#path('', include(router.urls)),
+router = DefaultRouter()
+router.register('beersss', BeerView, basename='beers')
+router.register('brandss', BrandView, basename='brand')
+router.register('images', ImageAPIView1, basename='images')
 
 urlpatterns = [
+    path('', include(router.urls)),
+
     #Beer api view
     path('beers/', BeerAPIView.as_view()),
     path('putbeer/', BeerPUTAPIView.as_view()),
@@ -29,4 +31,6 @@ urlpatterns = [
     path('login/', LoginUser.as_view()),
 
     path('api-token-auth/', views.obtain_auth_token),
+
+    path('id/<id>', ImageAPIView.as_view())
 ]

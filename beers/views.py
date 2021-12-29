@@ -1,4 +1,5 @@
-from os import stat
+
+
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.http import response
@@ -7,15 +8,16 @@ from rest_framework import viewsets, status, filters, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from beers.models import Beer, Brand
+from beers.models import Beer, Brand, Image
 from .serializer import BeerSerializer, BrandSerializer, UserSeriailizer
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.authtoken import views
-# Create your views here.
 
+import os
+from beer.settings import BASE_DIR, MEDIA_URL
 
 class RegisterUser(APIView):
     def post(self, request):
@@ -56,6 +58,12 @@ class BeerAPIView(APIView):
                 serializer = BeerSerializer(beer)
         except:
             #return all beer objects
+            print("OS PATH",os.path.dirname)
+            print("BASE DIR", BASE_DIR)
+            mypath = os.path.join(BASE_DIR, "beers/static/media")
+            print("FINAL PATH", mypath)
+            abs_url = self.request.build_absolute_uri('/').strip("/") + MEDIA_URL + "pic.PNG" 
+            print("URL", abs_url)
             beers = Beer.objects.all()
             serializer = BeerSerializer(beers, many=True)
   
@@ -110,6 +118,25 @@ class FilterBeerListView(generics.ListAPIView):
     serializer_class = BeerSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
+
+
+
+#Render IMAGE
+from .custom_renderers import JPEGRenderer, PNGRenderer
+from .serializer import ImageSerializer
+
+class ImageAPIView1(viewsets.ModelViewSet):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
+
+class ImageAPIView(generics.RetrieveAPIView):
+    def get(self, request, *args, **kwargs):
+        renderer_classes = [JPEGRenderer]
+        queryset = Beer.objects.get(id=self.kwargs['id']).image
+        data = queryset
+        return Response(data, content_type='image/jpg')
+
 
 
 class BeerView(viewsets.ModelViewSet):
