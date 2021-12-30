@@ -58,12 +58,6 @@ class BeerAPIView(APIView):
                 serializer = BeerSerializer(beer)
         except:
             #return all beer objects
-            print("OS PATH",os.path.dirname)
-            print("BASE DIR", BASE_DIR)
-            mypath = os.path.join(BASE_DIR, "beers/static/media")
-            print("FINAL PATH", mypath)
-            abs_url = self.request.build_absolute_uri('/').strip("/") + MEDIA_URL + "pic.PNG" 
-            print("URL", abs_url)
             beers = Beer.objects.all()
             serializer = BeerSerializer(beers, many=True)
   
@@ -109,7 +103,7 @@ class BrandAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -120,9 +114,12 @@ class FilterBeerListView(generics.ListAPIView):
     search_fields = ['name']
 
 
-#Image
+#Image Views
 from .serializer import ImageSerializer
 class ImageView(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
 
