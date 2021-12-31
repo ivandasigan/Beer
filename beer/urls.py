@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("beers.urls"))
+    path('api/v1/', include("beers.urls"))
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
