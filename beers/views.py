@@ -8,7 +8,7 @@ from rest_framework import viewsets, status, filters, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from beers.models import Beer, Brand, Image
+from beers.models import Beer, Brand
 from .serializer import BeerSerializer, BrandSerializer, UserSeriailizer
 
 from rest_framework.authentication import TokenAuthentication
@@ -16,8 +16,6 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.authtoken import views
 
-import os
-from beer.settings import BASE_DIR, MEDIA_URL
 
 class RegisterUser(APIView):
     def post(self, request):
@@ -112,17 +110,6 @@ class FilterBeerListView(generics.ListAPIView):
     serializer_class = BeerSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
-
-
-#Image Views
-from .serializer import ImageSerializer
-class ImageView(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    queryset = Image.objects.all()
-    serializer_class = ImageSerializer
-
 
 class BeerView(viewsets.ModelViewSet):
     queryset = Beer.objects.all()

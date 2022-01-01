@@ -1,6 +1,6 @@
 
-from rest_framework import fields, serializers
-from .models import Beer, Brand, Image
+from rest_framework import serializers
+from .models import Beer, Brand
 
 from django.contrib.auth.models import User
 
@@ -17,7 +17,7 @@ class UserSeriailizer(serializers.ModelSerializer):
 class BeerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Beer
-        fields = ['id','name','size','srp', 'stock','ratings']
+        fields = ['id','name','image','size','srp', 'stock','ratings']
     
 class BrandSerializer(serializers.ModelSerializer):
     beers = BeerSerializer(many=True, read_only=False)
@@ -33,9 +33,3 @@ class BrandSerializer(serializers.ModelSerializer):
             Beer.objects.create(brand=brand, **beer_data)
         return brand
 
-
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ['id','image']
-    

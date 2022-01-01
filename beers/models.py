@@ -13,7 +13,7 @@ class Brand(models.Model):
 class Beer(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    image = models.ImageField(null=True)
+    image = models.ImageField(upload_to="images/%Y/%m/%D/",null=True, blank=True)
     size = models.CharField(max_length=10)
     srp = models.DecimalField(max_digits=5, decimal_places=1)
     stock = models.IntegerField(default=0)
@@ -22,7 +22,3 @@ class Beer(models.Model):
     def __str__(self):
         return self.name 
 
-
-class Image(models.Model):
-    id = models.AutoField(primary_key=True)
-    image = models.ImageField(upload_to="images/%Y/%m/%D/",null=True, blank=True)

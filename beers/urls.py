@@ -4,14 +4,14 @@ from rest_framework import urlpatterns
 from rest_framework.routers import DefaultRouter
 
 from beers.models import Beer
-from .views import BeerView, BrandView, BeerAPIView, BrandAPIView, RegisterUser, BeerPUTAPIView, LoginUser, FilterBeerListView, ImageView
+from .views import BeerView, BrandView, BeerAPIView, BrandAPIView, RegisterUser, BeerPUTAPIView, LoginUser, FilterBeerListView
 
 from rest_framework.authtoken import views
 
 router = DefaultRouter()
 router.register('beersss', BeerView, basename='beers')
 router.register('brandss', BrandView, basename='brand')
-router.register('images', ImageView, basename='images')
+
 
 
 urlpatterns = [
