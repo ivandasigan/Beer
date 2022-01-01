@@ -13,11 +13,11 @@ class Brand(models.Model):
 class Beer(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    
+    image = models.ImageField(null=True)
     size = models.CharField(max_length=10)
-    srp = models.FloatField()
+    srp = models.DecimalField(max_digits=5, decimal_places=1)
     stock = models.IntegerField(default=0)
-    ratings = models.FloatField(default=0)
+    ratings = models.DecimalField(max_digits=5, decimal_places=1)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, related_name='beers')
     def __str__(self):
         return self.name 
