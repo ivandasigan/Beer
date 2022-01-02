@@ -36,7 +36,7 @@ class LoginUser(APIView):
         try:
             user = User.objects.get(username=username, password=password)
             user_token = user.auth_token.key
-            return Response({"status":200,"token": user_token, "message":"Successfully login"})
+            return Response({"status":200,'payload': {"username": username, "password":password}, "token": user_token, "message":"Successfully login"})
         except:
             return Response({"status":401,"token": None, "message":"Something went wrong"})
 
