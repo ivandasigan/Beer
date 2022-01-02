@@ -15,7 +15,7 @@ class Beer(models.Model):
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to="images/%Y/%m/%D/",null=True, blank=True)
     size = models.CharField(max_length=10)
-    srp = models.DecimalField(max_digits=5, decimal_places=1)
+    srp = models.DecimalField(max_digits=6, decimal_places=1)
     stock = models.IntegerField(default=0)
     ratings = models.DecimalField(max_digits=5, decimal_places=1)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, related_name='beers')
